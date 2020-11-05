@@ -4,6 +4,7 @@ import "sync"
 
 type container map[string]interface{}
 
+// singleton
 var dependency container
 
 var lock = &sync.Mutex{}
@@ -19,10 +20,14 @@ func UseIOC() {
 
 // AddDependency to the DI Container
 func AddDependency(ref string, impl interface{}) {
-	dependency[ref] = impl
+	if dependency != nil {
+		dependency[ref] = impl
+	}
 }
 
 // Inject injects a dependency
 func Inject(req string) interface{} {
-	return dependency[req]
+	if dependency != nil {
+		return dependency[req]
+	}
 }
