@@ -30,4 +30,6 @@ func Inject(req string) interface{} {
 	if dependency != nil {
 		return dependency[req]
 	}
+	return nil
+
 }
