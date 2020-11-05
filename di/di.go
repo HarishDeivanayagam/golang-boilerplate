@@ -1,10 +1,20 @@
 package di
 
-var dependency map[string]interface{}
+import "sync"
+
+type container map[string]interface{}
+
+var dependency container
+
+var lock = &sync.Mutex{}
 
 // UseIOC instanciated DI map
 func UseIOC() {
-	dependency = make(map[string]interface{})
+	lock.Lock()
+	defer lock.Unlock()
+	if dependency == nil {
+		dependency = make(map[string]interface{})
+	}
 }
 
 // AddDependency to the DI Container
