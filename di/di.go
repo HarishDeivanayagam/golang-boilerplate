@@ -5,7 +5,7 @@ import "sync"
 type container map[string]interface{}
 
 // singleton
-var dependency container
+var diContainer container
 
 var lock = &sync.Mutex{}
 
@@ -13,23 +13,22 @@ var lock = &sync.Mutex{}
 func UseIOC() {
 	lock.Lock()
 	defer lock.Unlock()
-	if dependency == nil {
-		dependency = make(map[string]interface{})
+	if diContainer == nil {
+		diContainer = make(container)
 	}
 }
 
 // AddDependency to the DI Container
 func AddDependency(ref string, impl interface{}) {
-	if dependency != nil {
-		dependency[ref] = impl
+	if diContainer != nil {
+		diContainer[ref] = impl
 	}
 }
 
 // Inject injects a dependency
 func Inject(req string) interface{} {
-	if dependency != nil {
-		return dependency[req]
+	if diContainer != nil {
+		return diContainer[req]
 	}
 	return nil
-
 }
